@@ -1,0 +1,130 @@
+services:
+  # ==========================================
+  # BASE DE DATOS: BACKEND (CTV)
+  # ==========================================
+  db_ctv:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "${MYSQL_CTV_PORT}:{MYSQL_CTV_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_CTV_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_CTV_DATABASE}
+      MYSQL_USER: ${MYSQL_CTV_USER}
+      MYSQL_PASSWORD: ${MYSQL_CTV_PASSWORD}
+      MYSQL_TCP_PORT: ${MYSQL_CTV_PORT}
+    volumes:
+      - mysql_data_ctv:/var/lib/mysql
+    networks:
+      - ctv-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_CTV_ROOT_PASSWORD}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # BACKEND PRINCIPAL (CTV)
+  # ==========================================
+  ctv:
+    image: ppissi/ctv-unq:latest
+    restart: always
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py init_defaults &&
+             python manage.py runserver 0.0.0.0:${DJANGO_CTV_PORT}"
+    ports:
+      - "${DJANGO_CTV_PORT}:${DJANGO_CTV_PORT}"
+    volumes:
+      - media_ctv:/app/media
+    environment:
+      - DB_HOST=db_ctv
+      - DB_NAME=${MYSQL_CTV_DATABASE}
+      - DB_USER=${MYSQL_CTV_USER}
+      - DB_PASSWORD=${MYSQL_CTV_PASSWORD}
+      - DB_PORT=3306
+      - DJANGO_SECRET_KEY=${DJANGO_CTV_SECRET_KEY}
+      - DJANGO_SETTINGS_MODULE=${DJANGO_CTV_SETTINGS_MODULE}
+      - FLIGHTS_API_URL=${FLIGHTS_API_URL}
+    depends_on:
+      db_ctv:
+        condition: service_healthy
+      vuelos:
+        condition: service_started
+    networks:
+      - ctv-network
+
+  # ==========================================
+  # BASE DE DATOS: API VUELOS
+  # ==========================================
+  db_vuelos:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "${MYSQL_VUELOS_PORT}:${MYSQL_VUELOS_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_VUELOS_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_VUELOS_DATABASE}
+      MYSQL_USER: ${MYSQL_VUELOS_USER}
+      MYSQL_PASSWORD: ${MYSQL_VUELOS_PASSWORD}
+      MYSQL_TCP_PORT: ${MYSQL_VUELOS_PORT}
+    volumes:
+      - mysql_data_vuelos:/var/lib/mysql
+    networks:
+      - ctv-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_VUELOS_ROOT_PASSWORD}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # API EXTERNA SIMULADA (VUELOS)
+  # ==========================================
+  vuelos:
+    image: ppissi/vuelos:latest
+    restart: always
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py crear_vuelos &&
+             python manage.py runserver 0.0.0.0:${DJANGO_VUELOS_PORT}"
+    ports:
+      - "${DJANGO_VUELOS_PORT}:${DJANGO_VUELOS_PORT}"
+    volumes:
+      - media_vuelos:/app/media
+    environment:
+      - DB_HOST=db_vuelos
+      - DB_NAME=${MYSQL_VUELOS_DATABASE}
+      - DB_USER=${MYSQL_VUELOS_USER}
+      - DB_PASSWORD=${MYSQL_VUELOS_PASSWORD}
+      - DB_PORT=3306
+      - DJANGO_SECRET_KEY=${DJANGO_VUELOS_SECRET_KEY}
+      - DJANGO_SETTINGS_MODULE=${DJANGO_VUELOS_SETTINGS_MODULE}
+    depends_on:
+      db_vuelos:
+        condition: service_healthy
+    networks:
+      - ctv-network
+
+  # ==========================================
+  # FRONTEND (NGINX)
+  # ==========================================
+  frontend:
+    image: ppissi/ctv-front:latest
+    restart: always
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    depends_on:
+      - ctv
+    networks:
+      - ctv-network
+
+volumes:
+  mysql_data_ctv:
+  mysql_data_vuelos:
+  media_ctv:
+  media_vuelos:
+
+networks:
+  ctv-network:
+    driver: bridge
