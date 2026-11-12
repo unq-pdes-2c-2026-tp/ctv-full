@@ -6,13 +6,13 @@ services:
     image: mysql:latest
     restart: always
     ports:
-      - "${MYSQL_CTV_PORT}:{MYSQL_CTV_PORT}"
+      - "${MYSQL_CTV_PORT}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_CTV_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_CTV_DATABASE}
       MYSQL_USER: ${MYSQL_CTV_USER}
       MYSQL_PASSWORD: ${MYSQL_CTV_PASSWORD}
-      MYSQL_TCP_PORT: ${MYSQL_CTV_PORT}
+      MYSQL_TCP_PORT: 3306
     volumes:
       - mysql_data_ctv:/var/lib/mysql
     networks:
@@ -61,13 +61,13 @@ services:
     image: mysql:latest
     restart: always
     ports:
-      - "${MYSQL_VUELOS_PORT}:${MYSQL_VUELOS_PORT}"
+      - "${MYSQL_VUELOS_PORT}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_VUELOS_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_VUELOS_DATABASE}
       MYSQL_USER: ${MYSQL_VUELOS_USER}
       MYSQL_PASSWORD: ${MYSQL_VUELOS_PASSWORD}
-      MYSQL_TCP_PORT: ${MYSQL_VUELOS_PORT}
+      MYSQL_TCP_PORT: 3306
     volumes:
       - mysql_data_vuelos:/var/lib/mysql
     networks:
@@ -113,7 +113,7 @@ services:
     image: ppissi/ctv-front:latest
     restart: always
     ports:
-      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+      - "${FRONTEND_PORT}:80"
     depends_on:
       - ctv
     networks:
