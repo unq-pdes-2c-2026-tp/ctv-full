@@ -4,18 +4,18 @@
   "metadata": {
     "name": "adwhlfl",
     "namespace": "default",
-    "uid": "627ef655-f2ef-4530-940d-b66a05326e5c",
-    "resourceVersion": "1794365646564982",
-    "generation": 26,
-    "creationTimestamp": "2026-11-11T01:38:06Z",
+    "uid": "92de265c-84d6-46cf-9dc1-4d76469ea3d2",
+    "resourceVersion": "1794685484715016",
+    "generation": 3,
+    "creationTimestamp": "2026-11-14T19:24:20Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "3638366894600192"
+      "grafana.app/deprecatedInternalID": "490259842359296"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:ag3xlcv1h58n4d",
+      "grafana.app/createdBy": "user:ag4ay9itmwv7kc",
       "grafana.app/saved-from-ui": "Grafana v13.3.1 (da3aa3ff57)",
-      "grafana.app/updatedBy": "user:ag3xlcv1h58n4d",
-      "grafana.app/updatedTimestamp": "2026-11-11T02:54:06Z"
+      "grafana.app/updatedBy": "user:ag4ay9itmwv7kc",
+      "grafana.app/updatedTimestamp": "2026-11-14T19:44:44Z"
     }
   },
   "spec": {
@@ -62,7 +62,7 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "bg3xlgne145xcc"
+                        "name": "fg4ayrnh1u680c"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -176,11 +176,11 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "bg3xlgne145xcc"
+                        "name": "fg4ayrnh1u680c"
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "  count by (le, func) (\n    rate(flights_api_request_duration_seconds_count[$__interval])\n  )",
+                        "expr": "  count by (le, func) (\n    rate(flights_api_request_duration_seconds_count[$__rate_interval])\n  )",
                         "legendFormat": "{{func}}",
                         "range": true
                       }
@@ -294,7 +294,7 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "bg3xlgne145xcc"
+                        "name": "fg4ayrnh1u680c"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -389,7 +389,7 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "bg3xlgne145xcc"
+                        "name": "fg4ayrnh1u680c"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -488,7 +488,7 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "bg3xlgne145xcc"
+                        "name": "fg4ayrnh1u680c"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -573,7 +573,7 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "bg3xlgne145xcc"
+                        "name": "fg4ayrnh1u680c"
                       },
                       "spec": {
                         "editorMode": "code",
