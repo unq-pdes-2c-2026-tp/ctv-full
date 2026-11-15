@@ -26,6 +26,18 @@ cp .env.example .env
 docker compose up -d --pull always
 ```
 
+### 3. Configure grafana
+
+- Go to http://localhost:3000
+- Login using admin/admin
+- Skip password change
+- Go to connections / datasources on the left menu
+- Add prometheus as data source
+- As URL, put http://prometheus:9090
+- On the top right side, import dashboard
+- Paste the content of `dashboard.json`
+- Refresh each chart to revalidate the datasource
+
 ## How do I use it?
 
 Our docker compose already runs the commands with a test dataset.
