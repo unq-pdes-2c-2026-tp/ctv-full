@@ -152,12 +152,25 @@ services:
     networks:
       - ctv-network
 
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-target=all", "-config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+      - tempo_data:/var/tempo
+    ports:
+      - "3200:3200"
+    networks:
+      - ctv-network
+
+
 volumes:
   mysql_data_ctv:
   mysql_data_vuelos:
   media_ctv:
   media_vuelos:
   grafana_data:
+  tempo_data:
 
 networks:
   ctv-network:
