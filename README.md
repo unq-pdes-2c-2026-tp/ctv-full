@@ -3,10 +3,12 @@
 Orchestrator for CTV Repositories.
 
 ## Authors
-
 - Elizabeth Gasañol
 - Federico Martinez
 - Pablo Pissi
+
+## ERM (Data model)
+[Link](https://github.com/unq-pdes-2c-2026-tp/backend/blob/main/ERM.md)
 
 ## How do I run it?
 
@@ -38,12 +40,29 @@ docker compose up -d --pull always
 - Paste the content of `dashboard.json`
 - Refresh each chart to revalidate the datasource
 
+### 4. Run load tests
+
+With the services running, open a terminal at the root of `ctv-full`. The [backend repository](https://github.com/unq-pdes-2c-2026-tp/backend) must be checked out next to `ctv-full` so Compose can mount its load-test scripts. You do not need to install k6; Compose runs the `grafana/k6` image.
+
+```bash
+docker compose --profile load-tests run --rm k6 run --summary-export /results/sustained-load.json /scripts/sustained-load.js
+docker compose --profile load-tests run --rm k6 run --summary-export /results/spike-load.json /scripts/spike-load.js
+docker compose --profile load-tests run --rm k6 run --summary-export /results/gradual-load.json /scripts/gradual-load.js
+```
+
+Test summaries are written to `ctv-full/k6-results/`.
+
 ## How do I use it?
 
-Our docker compose already runs the commands with a test dataset.
+Our docker compose creates a test dataset.
+Testing credentials:
+| email | password |
+| ----- | -------- |
+| admin@gmail.com | admin |
+| agency@gmail.com | agency |
+| user@gmail.com | user |
 
-These are the URLs that form the project:
-
+## Project URLS:
 | Service  | URL     |
 | -------- | ------- |
 | Frontend / Main application | http://localhost:80 |
@@ -51,3 +70,4 @@ These are the URLs that form the project:
 | Flights API | http://localhost:8000/api/ [Swagger](http://localhost:8000/api/schema/swagger-ui/#/) |
 | Backend Database | localhost:3706 |
 | Flights Database | localhost:3707 |
+| Grafana | http://localhost:3000 |

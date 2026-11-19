@@ -167,6 +167,18 @@ services:
     networks:
       - ctv-network
 
+  k6:
+    image: grafana/k6:latest
+    profiles:
+      - load-tests
+    environment:
+      BASE_URL: http://ctv:${DJANGO_CTV_PORT}
+    volumes:
+      - ../backend/load-tests:/scripts:ro
+      - ./k6-results:/results
+    networks:
+      - ctv-network
+
   opensearch:
     image: opensearchproject/opensearch:3
     container_name: opensearch
