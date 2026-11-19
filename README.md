@@ -40,6 +40,18 @@ docker compose up -d --pull always
 - Paste the content of `dashboard.json`
 - Refresh each chart to revalidate the datasource
 
+### 4. Run load tests
+
+With the services running, open a terminal at the root of the [backend repository](https://github.com/unq-pdes-2c-2026-tp/backend) and run one of these commands:
+
+```bash
+k6 run --env BASE_URL=http://localhost:4000 --summary-export ./load-tests/summary.json ./load-tests/sustained-load.js
+k6 run --env BASE_URL=http://localhost:4000 --summary-export ./load-tests/summary.json ./load-tests/spike-load.js
+k6 run --env BASE_URL=http://localhost:4000 --summary-export ./load-tests/summary.json ./load-tests/gradual-load.js
+```
+
+Each run writes its summary to `load-tests/summary.json`, replacing the previous summary.
+
 ## How do I use it?
 
 Our docker compose creates a test dataset.
