@@ -3,10 +3,12 @@
 Orchestrator for CTV Repositories.
 
 ## Authors
-
 - Elizabeth Gasañol
 - Federico Martinez
 - Pablo Pissi
+
+## ERM (Data model)
+[Link](https://github.com/unq-pdes-2c-2026-tp/backend/blob/main/ERM.md)
 
 ## How do I run it?
 
@@ -40,10 +42,15 @@ docker compose up -d --pull always
 
 ## How do I use it?
 
-Our docker compose already runs the commands with a test dataset.
+Our docker compose creates a test dataset.
+Testing credentials:
+| email | password |
+| ----- | -------- |
+| admin@gmail.com | admin |
+| agency@gmail.com | agency |
+| user@gmail.com | user |
 
-These are the URLs that form the project:
-
+## Project URLS:
 | Service  | URL     |
 | -------- | ------- |
 | Frontend / Main application | http://localhost:80 |
@@ -51,3 +58,4 @@ These are the URLs that form the project:
 | Flights API | http://localhost:8000/api/ [Swagger](http://localhost:8000/api/schema/swagger-ui/#/) |
 | Backend Database | localhost:3706 |
 | Flights Database | localhost:3707 |
+| Grafana | http://localhost:3000 |
