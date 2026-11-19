@@ -127,6 +127,8 @@ services:
     ports:
       - "4317:4317"
       - "8889:8889"
+      - "4318:4318"
+
     networks:
       - ctv-network
 
@@ -143,6 +145,8 @@ services:
 
   grafana:
     image: grafana/grafana:latest
+    environment:
+      GF_INSTALL_PLUGINS: grafana-opensearch-datasource
     ports:
       - "3000:3000"
     volumes:
@@ -175,6 +179,25 @@ services:
     networks:
       - ctv-network
 
+  opensearch:
+    image: opensearchproject/opensearch:3
+    container_name: opensearch
+    environment:
+      discovery.type: single-node
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+      plugins.security.disabled: "true"
+      bootstrap.memory_lock: "true"
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - ctv-network
 
 volumes:
   mysql_data_ctv:
@@ -183,6 +206,7 @@ volumes:
   media_vuelos:
   grafana_data:
   tempo_data:
+  opensearch_data:
 
 networks:
   ctv-network:
