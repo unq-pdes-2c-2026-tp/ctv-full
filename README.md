@@ -42,15 +42,15 @@ docker compose up -d --pull always
 
 ### 4. Run load tests
 
-With the services running, open a terminal at the root of the [backend repository](https://github.com/unq-pdes-2c-2026-tp/backend) and run one of these commands:
+With the services running, open a terminal at the root of `ctv-full`. The [backend repository](https://github.com/unq-pdes-2c-2026-tp/backend) must be checked out next to `ctv-full` so Compose can mount its load-test scripts. You do not need to install k6; Compose runs the `grafana/k6` image.
 
 ```bash
-k6 run --env BASE_URL=http://localhost:4000 --summary-export ./load-tests/summary.json ./load-tests/sustained-load.js
-k6 run --env BASE_URL=http://localhost:4000 --summary-export ./load-tests/summary.json ./load-tests/spike-load.js
-k6 run --env BASE_URL=http://localhost:4000 --summary-export ./load-tests/summary.json ./load-tests/gradual-load.js
+docker compose --profile load-tests run --rm k6 run --summary-export /results/sustained-load.json /scripts/sustained-load.js
+docker compose --profile load-tests run --rm k6 run --summary-export /results/spike-load.json /scripts/spike-load.js
+docker compose --profile load-tests run --rm k6 run --summary-export /results/gradual-load.json /scripts/gradual-load.js
 ```
 
-Each run writes its summary to `load-tests/summary.json`, replacing the previous summary.
+Test summaries are written to `ctv-full/k6-results/`.
 
 ## How do I use it?
 
