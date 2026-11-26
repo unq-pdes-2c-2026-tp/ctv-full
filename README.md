@@ -34,8 +34,9 @@ docker compose up -d --pull always
 - Login using admin/admin
 - Skip password change
 - Go to connections / datasources on the left menu
-- Add prometheus as data source
-- As URL, put http://prometheus:9090
+- Add prometheus as data source with URL http://prometheus:9090
+- Add tempo as data source with URL http://tempo:3200
+- Add opensearch as data source with URL http://opensearch:9200, scroll down and click "Get Version and Save"
 - On the top right side, import dashboard
 - Paste the content of `dashboard.json`
 - Refresh each chart to revalidate the datasource
